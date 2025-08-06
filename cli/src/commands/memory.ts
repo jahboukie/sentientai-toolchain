@@ -33,6 +33,42 @@ export class MemoryCommands extends BaseCommand {
       });
 
     memoryCmd
+      .command('search-advanced <query>')
+      .description('Search knowledge base with advanced relevance scoring')
+      .option('-l, --limit <number>', 'Limit results', '10')
+      .action(async (query: string, options: { limit: string }) => {
+        try {
+          const memory = new MemoryManager();
+          const results = await memory.searchAdvanced(query, parseInt(options.limit));
+
+          console.log('\n🔍 Advanced Search Results:');
+          console.log('─'.repeat(60));
+
+          for (const result of results) {
+            console.log(`\n📊 Relevance: ${(result.relevanceScore * 100).toFixed(1)}% | ID: ${result.executionId}`);
+            console.log(`📝 ${result.matchedContent}`);
+            console.log(`⏰ ${result.timestamp.toLocaleString()}`);
+            console.log(`🏷️  ${result.tags.join(', ') || 'No tags'} | 📂 ${result.category} | ⭐ ${result.priority}`);
+            console.log(`🧩 Complexity: ${result.complexity}/10 | 🎯 Confidence: ${(result.confidence * 100).toFixed(1)}%`);
+
+            // Show top 3 relevance factors
+            const topFactors = Object.entries(result.factors)
+              .sort(([,a], [,b]) => b - a)
+              .slice(0, 3);
+
+            console.log('📈 Top Factors:');
+            topFactors.forEach(([factor, score]) => {
+              const percentage = (score * 100).toFixed(1);
+              console.log(`   ${factor}: ${percentage}%`);
+            });
+          }
+        } catch (error) {
+          console.error('Advanced search failed:', error);
+          process.exit(1);
+        }
+      });
+
+    memoryCmd
       .command('store')
       .description('Store execution context')
       .option('-p, --prompt <prompt>', 'Original prompt')
@@ -167,6 +203,35 @@ export class MemoryCommands extends BaseCommand {
 
         } catch (error) {
           console.error('Failed to get execution context:', error);
+          process.exit(1);
+        }
+      });
+
+    memoryCmd
+      .command('weights')
+      .description('View or update relevance scoring weights')
+      .option('--set <weights>', 'Set weights as JSON (e.g., \'{"ftsScore": 0.3}\')')
+      .action(async (options: { set?: string }) => {
+        try {
+          const memory = new MemoryManager();
+
+          if (options.set) {
+            const newWeights = JSON.parse(options.set);
+            memory.updateRelevanceWeights(newWeights);
+            console.log('✅ Relevance weights updated');
+          }
+
+          const weights = memory.getRelevanceWeights();
+          console.log('\n⚖️  Current Relevance Scoring Weights:');
+          console.log('─'.repeat(40));
+
+          Object.entries(weights).forEach(([factor, weight]) => {
+            const percentage = (weight * 100).toFixed(1);
+            console.log(`${factor.padEnd(20)}: ${percentage}%`);
+          });
+
+        } catch (error) {
+          console.error('Failed to manage weights:', error);
           process.exit(1);
         }
       });

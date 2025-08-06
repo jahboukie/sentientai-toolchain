@@ -1,12 +1,15 @@
 import { DatabaseManager } from '../database/databaseManager';
 import { logger } from '../utils/logger';
 import { ExecutionRecord, MemorySearchResult, MemoryStats } from './types';
+import { AdvancedRelevanceScorer, ScoredResult } from './relevanceScorer';
 
 export class MemoryManager {
   private dbManager: DatabaseManager;
+  private relevanceScorer: AdvancedRelevanceScorer;
 
   constructor() {
     this.dbManager = new DatabaseManager();
+    this.relevanceScorer = new AdvancedRelevanceScorer(this.dbManager);
   }
 
   async initialize(): Promise<void> {
@@ -130,6 +133,38 @@ export class MemoryManager {
     }
   }
 
+  async searchAdvanced(query: string, limit: number = 10): Promise<ScoredResult[]> {
+    try {
+      await this.initialize();
+      const db = this.dbManager.getDatabase();
+
+      // Get raw FTS5 results with more data for advanced scoring
+      const stmt = db.prepare(`
+        SELECT
+          e.id, e.timestamp, e.prompt, e.reasoning, e.outcome, e.success,
+          e.code_changes, e.duration_ms, e.model_used, e.tokens_used,
+          rank
+        FROM executions_fts
+        JOIN executions e ON executions_fts.rowid = e.id
+        WHERE executions_fts MATCH ?
+        ORDER BY rank
+        LIMIT ?
+      `);
+
+      const rawResults = stmt.all(query, Math.min(limit * 3, 50)); // Get more results for better scoring
+
+      // Use advanced relevance scorer
+      const scoredResults = await this.relevanceScorer.scoreResults(query, rawResults);
+
+      // Return top results after advanced scoring
+      return scoredResults.slice(0, limit);
+
+    } catch (error) {
+      logger.error('Advanced memory search failed', error);
+      throw error;
+    }
+  }
+
   private calculateRelevanceScore(rank: number): number {
     // Convert FTS5 rank to a 0-1 relevance score
     // FTS5 rank is negative, closer to 0 means more relevant
@@ -216,5 +251,14 @@ export class MemoryManager {
       logger.error('Memory cleanup failed', error);
       throw error;
     }
+  }
+
+  // Advanced relevance scoring methods
+  getRelevanceWeights() {
+    return this.relevanceScorer.getWeights();
+  }
+
+  updateRelevanceWeights(weights: any) {
+    this.relevanceScorer.updateWeights(weights);
   }
 }
