@@ -1,0 +1,87 @@
+{
+  "name": "sentient-vscode-extension",
+  "displayName": "Sentient AI Agent",
+  "description": "Glass Box UI for Sentient AI Agent Platform",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other",
+    "Debuggers",
+    "Visualization"
+  ],
+
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sentient.activate",
+        "title": "Activate Sentient",
+        "category": "Sentient"
+      },
+      {
+        "command": "sentient.openDashboard",
+        "title": "Open Glass Box Dashboard",
+        "category": "Sentient"
+      },
+      {
+        "command": "sentient.pauseAgent",
+        "title": "Pause Agent",
+        "category": "Sentient"
+      },
+      {
+        "command": "sentient.resumeAgent",
+        "title": "Resume Agent",
+        "category": "Sentient"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "sentient.agentStatus",
+          "name": "Sentient Agent",
+          "when": "sentient.isActive"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Sentient",
+      "properties": {
+        "sentient.autoActivate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically activate Sentient when .sentient directory is detected"
+        },
+        "sentient.dashboardPort": {
+          "type": "number",
+          "default": 3000,
+          "description": "Port for the Glass Box dashboard"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsc -p ./",
+    "vscode:prepublish": "npm run build",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "dev": "npm run watch",
+    "test": "jest",
+    "lint": "eslint src --ext ts",
+    "clean": "rimraf dist out node_modules"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.95.0",
+    "@types/node": "^22.10.1",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.7.2",
+    "rimraf": "^6.0.1"
+  },
+  "dependencies": {
+    "ws": "^8.14.0",
+    "@types/ws": "^8.5.5"
+  }
+}

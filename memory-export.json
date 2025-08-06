@@ -1,0 +1,245 @@
+{
+  "exportedAt": "2025-08-06T04:28:34.480Z",
+  "project": {
+    "name": "sentient-ai-toolchain",
+    "id": "66b4ad415b2191dd",
+    "createdAt": "2025-08-06T08:28:34.000Z"
+  },
+  "conversations": [],
+  "decisions": [],
+  "fileHistory": [
+    {
+      "id": "3ebb1226-cdb0-4257-80fd-72f6d86e112c",
+      "filePath": "cli\\src\\memory\\memoryManager.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "0ce78a2e-3101-4d85-b8a8-61c9ceebe0fe",
+      "filePath": "cli\\src\\utils\\index.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "32a5f625-a928-4d81-b6a1-45e419105d25",
+      "filePath": "cli\\src\\utils\\logger.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "c9c2f7c2-0e14-4d8d-97ae-09443b0dbcfb",
+      "filePath": "cli\\src\\utils\\packageInfo.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "d6d0754f-02e8-4c54-9a3f-c64f1add8f37",
+      "filePath": "cli\\src\\index.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "d08543d4-2937-46f5-bbb9-ae204dde8445",
+      "filePath": "cli\\src\\cli.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "dff0ce88-f516-4b6f-99d3-b65e32f2569d",
+      "filePath": "extension\\src\\commands\\sentientCommands.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "89d913c3-7de7-4bc5-a4ea-8a98964770f7",
+      "filePath": "extension\\src\\providers\\glassBoxProvider.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "aa6d7822-589f-4976-8d0d-e8f438ce1445",
+      "filePath": "extension\\src\\providers\\agentStatusProvider.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "c1e26f7e-9d5e-4b80-b63e-4f1d47503e39",
+      "filePath": "extension\\src\\extension.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "7da79803-7e4c-4319-a55a-c620eef11ca1",
+      "filePath": "extension\\src\\core\\extensionManager.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "7ad58caf-ec13-4c92-9883-b3371235a5d5",
+      "filePath": "extension\\media\\main.js",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "892f9155-ccb8-46b8-a9b4-890f79e5ef54",
+      "filePath": "shared\\src\\index.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "9ac3d1b0-cc7e-4b09-ad0d-d7cea5f1a726",
+      "filePath": "shared\\src\\types.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "b67cf6a0-a163-42f8-98dc-779c69d5f147",
+      "filePath": "shared\\src\\constants.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "3e9601d7-deee-490a-be64-454e5b926005",
+      "filePath": "jest.config.js",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:59.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "ae108db3-52db-481a-b14b-c174f20dba95",
+      "filePath": "cli\\src\\commands\\index.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "1018365f-56f1-425a-8818-e5f0091b4942",
+      "filePath": "cli\\src\\commands\\base.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "91d44c3f-c6dc-46e3-ae1d-9d32393ca391",
+      "filePath": "cli\\src\\commands\\init.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "58836386-e8bb-4ef1-b908-76e105ea84c1",
+      "filePath": "cli\\src\\commands\\status.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "a6a174ec-5659-4835-bc64-032dcf2b2553",
+      "filePath": "cli\\src\\commands\\file.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "334efffd-b405-412d-ba2b-f88ed69c374e",
+      "filePath": "cli\\src\\commands\\memory.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "cd634cfc-b3ab-4b23-b885-463b9c926a34",
+      "filePath": "cli\\src\\commands\\test.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "b294557f-eaad-43c0-bde6-c402333defb2",
+      "filePath": "cli\\src\\core\\index.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "3481ec70-a512-46cf-8c30-f449c860a909",
+      "filePath": "cli\\src\\core\\projectInitializer.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "eef7bf11-b7c7-4eb7-b0b4-ef33c34794b9",
+      "filePath": "cli\\src\\core\\systemStatus.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "8e0e5158-e83d-4e5c-8be4-e883d20eb9c2",
+      "filePath": "cli\\src\\core\\fileOperations.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "0b1dab59-cdef-44b9-846b-e2f18eb7dba2",
+      "filePath": "cli\\src\\core\\testRunner.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "57d1786d-68bf-4aad-9eb4-3a0422a5f359",
+      "filePath": "cli\\src\\database\\index.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "4e929784-bb90-4b64-95c6-d05495c84d3a",
+      "filePath": "cli\\src\\database\\databaseManager.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "747d1571-90de-4db2-a679-3e8feb765e1f",
+      "filePath": "cli\\src\\database\\migrations.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "517711c2-ba87-49c5-8560-6f2d6e75241b",
+      "filePath": "cli\\src\\memory\\index.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    },
+    {
+      "id": "6bd5f847-bbe5-4e2f-8ba7-530949fcfa17",
+      "filePath": "cli\\src\\memory\\types.ts",
+      "changeType": "created",
+      "timestamp": "2025-08-06T08:08:58.000Z",
+      "conversationId": null
+    }
+  ],
+  "patterns": [],
+  "preferences": {}
+}
