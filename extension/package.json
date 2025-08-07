@@ -69,7 +69,7 @@
     "dev": "npm run watch",
     "test": "jest --passWithNoTests",
     "test:coverage": "echo 'Extension tests not implemented yet'",
-    "lint": "eslint 'src/**/*.ts' --max-warnings 0",
+    "lint": "eslint src/**/*.ts --max-warnings 0",
     "clean": "rimraf dist out node_modules"
   },
   "devDependencies": {

@@ -5,7 +5,7 @@ import { InitCommand } from './commands/init';
 import { StatusCommand } from './commands/status';
 import { FileCommands } from './commands/file';
 import { MemoryCommands } from './commands/memory';
-import { TestCommand } from './commands/test';
+
 import { DatabaseCommands } from './commands/database';
 import { logger } from './utils/logger';
 import { packageInfo } from './utils/packageInfo';
@@ -24,7 +24,7 @@ async function main(): Promise<void> {
     StatusCommand.register(program);
     FileCommands.register(program);
     MemoryCommands.register(program);
-    TestCommand.register(program);
+
     DatabaseCommands.register(program);
 
     // Parse arguments
