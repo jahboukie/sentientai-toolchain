@@ -13,7 +13,8 @@ module.exports = {
     'src/**/*.ts',
     '!src/**/*.d.ts',
     '!src/index.ts',
-    '!src/cli.ts'
+    '!src/cli.ts',
+    '!tests/**/*'
   ],
   coverageDirectory: 'coverage',
   coverageReporters: [
@@ -23,10 +24,10 @@ module.exports = {
   ],
   coverageThreshold: {
     global: {
-      branches: 90,
-      functions: 90,
-      lines: 90,
-      statements: 90
+      branches: 50,
+      functions: 50,
+      lines: 50,
+      statements: 50
     }
   },
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],

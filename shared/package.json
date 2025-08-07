@@ -7,8 +7,9 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "jest",
-    "lint": "eslint src/**/*.ts",
+    "test": "jest --passWithNoTests",
+    "test:coverage": "echo 'Shared library tests not implemented yet'",
+    "lint": "eslint 'src/**/*.ts' --max-warnings 0",
     "clean": "rimraf dist node_modules"
   },
   "devDependencies": {

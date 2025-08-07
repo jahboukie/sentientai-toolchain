@@ -37,16 +37,16 @@ export class AdvancedRelevanceScorer {
   constructor(dbManager: DatabaseManager) {
     this.dbManager = dbManager;
     
-    // Default weights for different relevance factors
+    // Default weights for different relevance factors (sum = 1.0)
     this.weights = {
-      ftsScore: 0.25,        // Base text matching
-      recencyScore: 0.15,    // Temporal relevance
-      successScore: 0.20,    // Success rate importance
-      complexityScore: 0.10, // Complexity matching
-      confidenceScore: 0.10, // Original confidence
-      contextScore: 0.15,    // Context similarity
-      frequencyScore: 0.10,  // Pattern frequency
-      semanticScore: 0.25    // Semantic similarity (highest weight)
+      ftsScore: 0.20,        // Base text matching
+      recencyScore: 0.12,    // Temporal relevance
+      successScore: 0.15,    // Success rate importance
+      complexityScore: 0.08, // Complexity matching
+      confidenceScore: 0.08, // Original confidence
+      contextScore: 0.12,    // Context similarity
+      frequencyScore: 0.05,  // Pattern frequency
+      semanticScore: 0.20    // Semantic similarity (highest weight)
     };
   }
 
