@@ -11,17 +11,22 @@
   "scripts": {
     "build": "npm run build --workspaces",
     "test": "npm run test --workspaces",
+    "test:coverage": "npm run test:coverage --workspaces",
     "lint": "npm run lint --workspaces",
+    "type-check": "npm run type-check --workspaces",
     "clean": "npm run clean --workspaces && rimraf node_modules",
     "dev": "npm run dev --workspace=cli",
     "dev:extension": "npm run dev --workspace=extension",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "ci:test": "npm run lint && npm run type-check && npm run test",
+    "ci:build": "npm run clean && npm install && npm run build"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.9",
+    "@eslint/js": "^9.15.0",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
-    "@eslint/js": "^9.15.0",
+    "audit-ci": "^7.1.0",
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",

@@ -1,0 +1,214 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    name: Test Suite
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [18.x, 20.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linting
+      run: npm run lint
+
+    - name: Run type checking
+      run: npm run type-check
+
+    - name: Run tests
+      run: npm test
+
+    - name: Build project
+      run: npm run build
+
+    - name: Test CLI functionality
+      run: |
+        cd cli
+        node dist/cli.js --version
+        node dist/cli.js --help
+        node dist/cli.js init --help
+        node dist/cli.js memory --help
+        node dist/cli.js database --help
+
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run security audit
+      run: npm audit --audit-level=moderate
+
+    - name: Check for vulnerabilities
+      run: npx audit-ci --moderate
+
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run code coverage
+      run: npm run test:coverage
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+
+  integration-test:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build
+
+    - name: Run integration tests
+      run: |
+        cd cli
+        # Test initialization
+        node dist/cli.js init --force
+        
+        # Test memory operations
+        node dist/cli.js memory store --prompt "CI/CD Test" --reasoning "Testing in CI pipeline"
+        node dist/cli.js memory search "test"
+        node dist/cli.js memory stats
+        
+        # Test database operations
+        node dist/cli.js database stats
+        node dist/cli.js database backup --description "CI test backup"
+        node dist/cli.js database list-backups
+        
+        # Test analytics
+        node dist/cli.js memory analytics
+
+  performance:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build
+
+    - name: Performance benchmark
+      run: |
+        cd cli
+        echo "Testing CLI startup time..."
+        time node dist/cli.js --version
+        
+        echo "Testing memory operations performance..."
+        node dist/cli.js init --force
+        
+        # Store multiple entries for performance testing
+        for i in {1..10}; do
+          node dist/cli.js memory store --prompt "Performance test $i" --reasoning "Testing performance"
+        done
+        
+        # Test search performance
+        time node dist/cli.js memory search "performance"
+        time node dist/cli.js memory analytics
+
+  release:
+    name: Release Check
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    needs: [test, security, code-quality, integration-test, performance]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build for release
+      run: npm run build
+
+    - name: Package CLI
+      run: |
+        cd cli
+        npm pack
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: sentient-cli-build
+        path: |
+          cli/dist/
+          cli/*.tgz
+
+    - name: Check package integrity
+      run: |
+        cd cli
+        npm pack --dry-run
+        echo "Package contents:"
+        tar -tzf *.tgz | head -20
