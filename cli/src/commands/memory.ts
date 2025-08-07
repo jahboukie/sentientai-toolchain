@@ -3,6 +3,7 @@ import { BaseCommand } from './base';
 import { MemoryManager } from '../memory/memoryManager';
 import { ExecutionContextManager, ContextCollector } from '../memory';
 import { DatabaseManager } from '../database';
+import { MemoryAnalyticsManager } from '../memory/analyticsManager';
 
 export class MemoryCommands extends BaseCommand {
   readonly name = 'memory';
@@ -232,6 +233,110 @@ export class MemoryCommands extends BaseCommand {
 
         } catch (error) {
           console.error('Failed to manage weights:', error);
+          process.exit(1);
+        }
+      });
+
+    memoryCmd
+      .command('analytics')
+      .description('Show comprehensive memory analytics dashboard')
+      .option('--export <format>', 'Export analytics (json|csv)', 'json')
+      .option('--save <filename>', 'Save analytics to file')
+      .action(async (options: { export?: string; save?: string }) => {
+        try {
+          const dbManager = new DatabaseManager();
+          const analytics = new MemoryAnalyticsManager(dbManager);
+
+          console.log('\n📊 Sentient Memory Analytics Dashboard');
+          console.log('═'.repeat(60));
+
+          const data = await analytics.getComprehensiveAnalytics();
+
+          // Overview Section
+          console.log('\n📈 Overview:');
+          console.log('─'.repeat(30));
+          console.log(`📝 Total Executions: ${data.overview.totalExecutions}`);
+          console.log(`✅ Successful: ${data.overview.successfulExecutions} (${(data.overview.successRate * 100).toFixed(1)}%)`);
+          console.log(`❌ Failed: ${data.overview.failedExecutions}`);
+          console.log(`⏱️  Avg Execution Time: ${data.overview.averageExecutionTime.toFixed(0)}ms`);
+          console.log(`🧠 Memory Entries: ${data.overview.totalMemoryEntries}`);
+          console.log(`💾 Database Size: ${(data.overview.databaseSize / 1024 / 1024).toFixed(2)} MB`);
+
+          if (data.overview.oldestExecution && data.overview.newestExecution) {
+            console.log(`📅 Data Range: ${data.overview.oldestExecution.toLocaleDateString()} - ${data.overview.newestExecution.toLocaleDateString()}`);
+          }
+
+          // Trends Section
+          console.log('\n📈 Trends:');
+          console.log('─'.repeat(30));
+          console.log(`📊 Weekly Growth: ${data.trends.weeklyGrowth.toFixed(1)}%`);
+          console.log(`📊 Monthly Growth: ${data.trends.monthlyGrowth.toFixed(1)}%`);
+
+          if (data.trends.dailyExecutions.length > 0) {
+            const recent = data.trends.dailyExecutions.slice(-7);
+            console.log(`📅 Last 7 Days: ${recent.reduce((sum, day) => sum + day.count, 0)} executions`);
+          }
+
+          // Patterns Section
+          console.log('\n🔍 Patterns:');
+          console.log('─'.repeat(30));
+
+          if (data.patterns.topCategories.length > 0) {
+            console.log('📂 Top Categories:');
+            data.patterns.topCategories.slice(0, 5).forEach(cat => {
+              console.log(`   ${cat.category}: ${cat.count} (${(cat.successRate * 100).toFixed(1)}% success)`);
+            });
+          }
+
+          if (data.patterns.topTags.length > 0) {
+            console.log('🏷️  Top Tags:');
+            data.patterns.topTags.slice(0, 5).forEach(tag => {
+              console.log(`   ${tag.tag}: ${tag.count} (${(tag.successRate * 100).toFixed(1)}% success)`);
+            });
+          }
+
+          if (data.patterns.modelUsage.length > 0) {
+            console.log('🤖 Model Usage:');
+            data.patterns.modelUsage.forEach(model => {
+              console.log(`   ${model.model}: ${model.count} executions, ${model.avgTokens.toFixed(0)} avg tokens`);
+            });
+          }
+
+          // Performance Section
+          console.log('\n⚡ Performance:');
+          console.log('─'.repeat(30));
+          console.log(`⏱️  Avg Response Time: ${data.performance.averageResponseTime.toFixed(0)}ms`);
+          console.log(`🧠 Memory Usage: ${(data.performance.memoryUsageStats.avg / 1024 / 1024).toFixed(2)} MB avg`);
+
+          // Insights Section
+          console.log('\n💡 Insights:');
+          console.log('─'.repeat(30));
+
+          if (data.insights.recommendations.length > 0) {
+            console.log('📋 Recommendations:');
+            data.insights.recommendations.forEach(rec => console.log(`   • ${rec}`));
+          }
+
+          if (data.insights.anomalies.length > 0) {
+            console.log('⚠️  Anomalies:');
+            data.insights.anomalies.forEach(anomaly => console.log(`   • ${anomaly}`));
+          }
+
+          if (data.insights.optimizationOpportunities.length > 0) {
+            console.log('🚀 Optimization Opportunities:');
+            data.insights.optimizationOpportunities.forEach(opp => console.log(`   • ${opp}`));
+          }
+
+          // Export functionality
+          if (options.save) {
+            const exportData = await analytics.exportAnalytics(options.export as any);
+            const fs = require('fs-extra');
+            await fs.writeFile(options.save, exportData);
+            console.log(`\n💾 Analytics exported to: ${options.save}`);
+          }
+
+        } catch (error) {
+          console.error('Failed to generate analytics:', error);
           process.exit(1);
         }
       });
